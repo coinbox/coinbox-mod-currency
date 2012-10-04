@@ -1,2 +1,2 @@
-from .currency import Currency, convert, get_default
+from .currency import Currency
 from .currencyunit import CurrencyUnit

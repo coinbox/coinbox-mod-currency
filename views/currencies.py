@@ -4,7 +4,7 @@ import cbpos
 
 from cbpos.mod.currency.models.currency import Currency
 
-from cbpos.mod.base.pages import FormPage
+from cbpos.mod.base.views import FormPage
 
 class CurrenciesPage(FormPage):
     itemClass = Currency

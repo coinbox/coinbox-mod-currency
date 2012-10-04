@@ -25,5 +25,13 @@ class CurrencyUnit(cbpos.database.Base, common.Item):
     def display(self):
         return func.concat(self.value, '/', self.currency.symbol)
 
+    def __lt__(self, other):
+        if other.currency != self.currency:
+            from cbpos.mod.currency.controllers import convert
+            other_value = convert(other.value, other.currency, self.currency)
+        else:
+            other_value = other.value
+        return self.value<other_value
+
     def __repr__(self):
         return "<CurrencyUnit %s>" % (self.currency.format(self.value),)

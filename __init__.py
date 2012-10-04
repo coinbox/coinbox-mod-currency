@@ -7,13 +7,11 @@ class ModuleLoader(BaseModuleLoader):
     name = 'Multiple Currencies Support'
 
     def load(self):
-        from cbpos.mod.currency.models.currency import Currency
-        from cbpos.mod.currency.models.currencyunit import CurrencyUnit
+        from cbpos.mod.currency.models import Currency, CurrencyUnit
         return [Currency, CurrencyUnit]
 
     def test(self):
-        from cbpos.mod.currency.models.currency import Currency
-        from cbpos.mod.currency.models.currencyunit import CurrencyUnit
+        from cbpos.mod.currency.models import Currency, CurrencyUnit
         
         LL = Currency(name='Lebanese Lira', symbol='L.L.', value=1.0, decimal_places=0, digit_grouping=True)
         USD = Currency(name='U.S. Dollar', symbol='USD', value=1500, decimal_places=2, digit_grouping=True)
@@ -21,7 +19,7 @@ class ModuleLoader(BaseModuleLoader):
     
         ll_values = [250, 500, 1000, 5000, 10000, 20000, 50000, 100000]
         usd_values = [0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 1, 2, 5, 10, 20, 50, 100]
-        eur_values = [0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 1, 2, 5, 20, 20, 50, 100, 500]
+        eur_values = [0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 1, 2, 5, 10, 20, 50, 100, 500]
     
         [CurrencyUnit(value=v, currency=LL) for v in ll_values]
         [CurrencyUnit(value=v, currency=USD) for v in usd_values]
@@ -34,14 +32,14 @@ class ModuleLoader(BaseModuleLoader):
         session.commit()
 
     def menu(self):
-        from cbpos.mod.currency.pages import CurrenciesPage
+        from cbpos.mod.currency.views import CurrenciesPage
             
         return [[],
                 [{'parent': 'System', 'label': 'Currencies', 'page': CurrenciesPage, 'image': self.res('images/menu-currencies.png')}]]
 
     def init(self):
         from PySide import QtGui
-        from cbpos.mod.currency.dialogs import CurrencyDialog
+        from cbpos.mod.currency.views.dialogs import CurrencyDialog
         from cbpos.mod.currency.models import Currency
         
         session = cbpos.database.session()
@@ -56,5 +54,5 @@ class ModuleLoader(BaseModuleLoader):
             return True
     
     def config_pages(self):
-        from cbpos.mod.currency.pages import CurrencyConfigPage 
+        from cbpos.mod.currency.views import CurrencyConfigPage 
         return [CurrencyConfigPage]

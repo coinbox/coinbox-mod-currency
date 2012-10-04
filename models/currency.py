@@ -33,26 +33,3 @@ class Currency(cbpos.database.Base, common.Item):
 
     def format(self, value):
         return '%s %s' % (format(round(value, max(0, self.decimal_places)), self.getFormatString()), self.symbol)
-
-default = None
-def get_default():
-    global default
-    currency_id = cbpos.config['mod.currency', 'default']
-    currency_id = None if currency_id == '' else currency_id
-    if default is not None and currency_id == default[0]:
-        return default[1]
-    session = cbpos.database.session()
-    if currency_id is not None:
-        default = (currency_id, session.query(Currency).filter_by(id=currency_id).one())
-        return default[1]
-    else:
-        default = (None, session.query(Currency).first())
-        return default[1]
-
-def convert(price, src_currency, dest_currency):
-    s_val = float(src_currency.value)
-    d_val = float(dest_currency.value)
-    #ps*vs = pd*vd
-
-    return float(price)*s_val/d_val
-    #return round(float(price)*s_val/d_val, dest_currency.decimal_places)
