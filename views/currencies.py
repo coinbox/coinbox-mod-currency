@@ -2,13 +2,15 @@ from PySide import QtCore, QtGui
 
 import cbpos
 
+from cbpos.mod.currency.controllers import CurrenciesFormController
 from cbpos.mod.currency.models.currency import Currency
 
 from cbpos.mod.base.views import FormPage
 
 class CurrenciesPage(FormPage):
-    itemClass = Currency
-    def fields(self):
+    controller = CurrenciesFormController()
+    
+    def widgets(self):
         value = QtGui.QDoubleSpinBox()
         value.setMinimum(0)
         value.setSingleStep(1)
@@ -17,26 +19,12 @@ class CurrenciesPage(FormPage):
         decimalPlaces.setRange(0, 10)
         decimalPlaces.setSingleStep(1)
         
-        return [("name", "Name", QtGui.QLineEdit(), ""),
-                ("symbol", "Symbol", QtGui.QLineEdit(), ""),
-                ("value", "Value", value, 0),
-                ("decimal_places", "Decimal Places", decimalPlaces, 0),
-                ("digit_grouping", "Digit Grouping", QtGui.QCheckBox(), True),
-                ]
-    
-    def items(self):
-        session = cbpos.database.session()
-        items = session.query(Currency.display, Currency).all()
-        return items
-    
-    def canDeleteItem(self, item):
-        return True
-    
-    def canEditItem(self, item):
-        return True
-    
-    def canAddItem(self):
-        return True
+        return (("name", QtGui.QLineEdit()),
+                ("symbol", QtGui.QLineEdit()),
+                ("value", value),
+                ("decimal_places", decimalPlaces),
+                ("digit_grouping", QtGui.QCheckBox()),
+                )
     
     def getDataFromControl(self, field):
         if field in ('name', 'symbol'):
@@ -54,6 +42,3 @@ class CurrenciesPage(FormPage):
             self.f[field].setValue(data)
         elif field == 'digit_grouping':
             self.f[field].setChecked(data)
-    
-    def getDataFromItem(self, field, item):
-        return getattr(item, field)

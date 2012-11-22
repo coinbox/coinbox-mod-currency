@@ -1,5 +1,7 @@
 __all__ = ('convert', 'default', 'round_units', 'decompose')
 
+from .form import *
+
 def convert(price, src, dest):
     s_val = float(src.value)
     d_val = float(dest.value)
@@ -9,8 +11,7 @@ def convert(price, src, dest):
     #return round(float(price)*s_val/d_val, dest_currency.decimal_places)
 
 _default_cache = None
-@property
-def default():
+def get_default():
     global _default_cache
     if _default_cache is None:
         currency_id = cbpos.config['mod.currency', 'default']
@@ -22,6 +23,9 @@ def default():
         else:
             _default_cache = (None, session.query(Currency).first())
     return _default_cache[1]
+
+from peak.util.proxies import ObjectProxy, CallbackProxy
+default = CallbackProxy(get_default)
 
 def round_units(price, currency):
     unit = min(currency.units).value
