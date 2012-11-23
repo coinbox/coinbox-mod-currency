@@ -8,11 +8,11 @@ class CurrenciesFormController(FormController):
     cls = Currency
     
     def fields(self):
-        return {"name": (cbpos.tr.auth._("Name"), ""),
-                "symbol": (cbpos.tr.auth._("Symbol"), ""),
-                "value": (cbpos.tr.auth._("Value"), 0),
-                "decimal_places": (cbpos.tr.auth._("Decimal Places"), 0),
-                "digit_grouping": (cbpos.tr.auth._("Group Digits"), True)
+        return {"name": (cbpos.tr.currency._("Name"), ""),
+                "symbol": (cbpos.tr.currency._("Symbol"), ""),
+                "value": (cbpos.tr.currency._("Value"), 0),
+                "decimal_places": (cbpos.tr.currency._("Decimal Places"), 0),
+                "digit_grouping": (cbpos.tr.currency._("Group Digits"), True)
                 }
     
     def items(self):
