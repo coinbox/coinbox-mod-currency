@@ -24,8 +24,10 @@ def get_default():
             _default_cache = (None, session.query(Currency).first())
     return _default_cache[1]
 
-from peak.util.proxies import ObjectProxy, CallbackProxy
-default = CallbackProxy(get_default)
+#from peak.util.proxies import ObjectProxy, CallbackProxy
+import weakref
+#default = CallbackProxy(get_default)
+default = weakref.proxy(get_default())
 
 def round_units(price, currency):
     unit = min(currency.units).value
