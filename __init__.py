@@ -35,7 +35,7 @@ class ModuleLoader(BaseModuleLoader):
         from cbpos.mod.currency.views import CurrenciesPage
             
         return [[],
-                [{'parent': 'System', 'label': 'Currencies', 'page': CurrenciesPage, 'image': self.res('images/menu-currencies.png')}]]
+                [{'parent': 'System', 'label': 'Currencies', 'page': CurrenciesPage, 'image': cbpos.res.currency('images/menu-currencies.png')}]]
 
     def init(self):
         from PySide import QtGui
