@@ -54,7 +54,7 @@ class CurrencyDialog(QtGui.QWidget):
         cbpos.config["mod.currency", "default"] = str(currency.id)
         self.close()
         
-        cbpos.start()
+        cbpos.ui.show_default()
     
     def onCancelButton(self):
         self.close()

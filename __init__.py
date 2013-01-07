@@ -1,3 +1,5 @@
+from pydispatch import dispatcher
+
 import cbpos
 from cbpos.modules import BaseModuleLoader
 
@@ -33,25 +35,27 @@ class ModuleLoader(BaseModuleLoader):
 
     def menu(self):
         from cbpos.mod.currency.views import CurrenciesPage
-            
+        
         return [[],
                 [{'parent': 'System', 'label': 'Currencies', 'page': CurrenciesPage, 'image': cbpos.res.currency('images/menu-currencies.png')}]]
 
     def init(self):
-        from PySide import QtGui
-        from cbpos.mod.currency.views.dialogs import CurrencyDialog
         from cbpos.mod.currency.models import Currency
         
         session = cbpos.database.session()
         currency_count = session.query(Currency).count()
         if currency_count == 0:
-            win = CurrencyDialog()
-            cbpos.set_main_window(win)
-            cbpos.break_init()
-            cbpos.load_database(True)
-            return True
-        else:
-            return True
+            dispatcher.connect(self.do_prompt_currency, signal='ui-post-init', sender='app')
+        
+        return True
+    
+    def do_prompt_currency(self):
+        from cbpos.mod.currency.views.dialogs import CurrencyDialog
+        
+        win = CurrencyDialog()
+        cbpos.ui.window = win
+        cbpos.break_init()
+        cbpos.load_database(True)
     
     def config_pages(self):
         from cbpos.mod.currency.views import CurrencyConfigPage 
