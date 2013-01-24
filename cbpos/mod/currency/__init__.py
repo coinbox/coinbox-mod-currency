@@ -34,10 +34,16 @@ class ModuleLoader(BaseModuleLoader):
         session.commit()
 
     def menu(self):
+        from cbpos.interface import MenuItem
         from cbpos.mod.currency.views import CurrenciesPage
         
         return [[],
-                [{'parent': 'System', 'label': 'Currencies', 'page': CurrenciesPage, 'image': cbpos.res.currency('images/menu-currencies.png')}]]
+                [MenuItem('currencies', parent='system',
+                          label=cbpos.tr.currency._('Currencies'),
+                          icon=cbpos.res.currency('images/menu-currencies.png'),
+                          page=CurrenciesPage
+                          )]
+                ]
 
     def init(self):
         from cbpos.mod.currency.models import Currency
