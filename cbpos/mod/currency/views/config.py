@@ -36,4 +36,4 @@ class CurrencyConfigPage(QtGui.QWidget):
     
     def update(self):
         default = self.default.itemData(self.default.currentIndex())
-        cbpos.config['mod.currency', 'default'] = str(default.id)
+        cbpos.config['mod.currency', 'default'] = unicode(default.id)

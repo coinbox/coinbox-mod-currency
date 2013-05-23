@@ -2,13 +2,20 @@ __all__ = ('convert', 'default', 'round_units', 'decompose')
 
 from .form import *
 
-def convert(price, src, dest):
-    s_val = float(src.value)
-    d_val = float(dest.value)
-    #ps*vs = pd*vd
+import cbpos
+logger = cbpos.get_logger(__name__)
 
-    return float(price)*s_val/d_val
-    #return round(float(price)*s_val/d_val, dest_currency.decimal_places)
+def convert(price_in_src, src, dst):
+    if src == dst:
+        return price_in_src
+    
+    logger.debug(u'Converting {} to {}'.format(repr(price_in_src), dst))
+    
+    price_in_dst = price_in_src * src.current_rate.reference_to_currency_ratio * dst.current_rate.currency_to_reference_ratio
+    
+    logger.debug(u'Price in {}: {}'.format(dst, repr(price_in_dst)))
+
+    return price_in_dst
 
 _default_cache = None
 def get_default():
@@ -32,7 +39,7 @@ default = CallbackProxy(get_default)
 def round_units(price, currency):
     unit = min(currency.units).value
     remainder = price%unit
-    return float(price)+(unit-remainder if remainder != 0 else 0)
+    return price+(unit-remainder if remainder != 0 else 0)
 
 def decompose(price, currency):
     remainder = price
