@@ -3,7 +3,7 @@ from PySide import QtCore, QtGui
 import cbpos
 
 from cbpos.mod.currency.controllers import CurrenciesFormController
-from cbpos.mod.currency.models.currency import Currency
+from cbpos.mod.currency.models import CurrencyRate 
 
 from cbpos.mod.base.views import FormPage
 
@@ -33,10 +33,9 @@ class CurrenciesPage(FormPage):
         rate.addWidget(reference_label)
         rate.addWidget(reference_value)
         
-        locale = Locale.default()
         id_field = QtGui.QComboBox()
-        for currency_id, currency_name in locale.currencies.iteritems():
-            id_field.addItem(currency_name, currency_id)
+        for currency_id, currency_name in sorted(cbpos.locale.currencies.iteritems()):
+            id_field.addItem(u'[{id}] {name}'.format(id=currency_id, name=currency_name), currency_id)
         
         return (("id", id_field),
                 ("current_rate", rate)
@@ -49,8 +48,14 @@ class CurrenciesPage(FormPage):
         elif field == 'current_rate':
             currency_value = self.f[field].itemAt(1).widget()
             reference_value = self.f[field].itemAt(3).widget()
-            data = CurrencyRate(currency_value=currency_value.value(),
-                                reference_value=reference_value.value(),)
+            if self.item is not None:
+                if self.item.current_rate.currency_value == currency_value.value() and \
+                        self.item.current_rate.reference_value == reference_value.value():
+                    data = None
+                    field = None
+            else:
+                data = CurrencyRate(currency_value=currency_value.value(),
+                                reference_value=reference_value.value())
         return (field, data)
     
     def setDataOnControl(self, field, data):
@@ -60,6 +65,9 @@ class CurrenciesPage(FormPage):
                 self.f[field].setCurrentIndex(index)
             else:
                 self.f[field].setCurrentIndex(-1)
+            
+            # Only enable changing the currency if it's a new one
+            self.f[field].setEnabled(self.editing and self.item is None)
         elif field in 'current_rate':
             currency_value = self.f[field].itemAt(1).widget()
             reference_value = self.f[field].itemAt(3).widget()

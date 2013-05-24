@@ -2,7 +2,7 @@ import cbpos
 
 import cbpos.mod.base.models.common as common
 
-from sqlalchemy import func, Table, Column, Integer, Numeric, String, Float, Date, Boolean, MetaData, ForeignKey
+from sqlalchemy import func, Table, Column, Integer, Numeric, String, Float, DateTime, Boolean, MetaData, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method, Comparator
 
@@ -15,9 +15,12 @@ class CurrencyRate(cbpos.database.Base, common.Item):
     currency_id = Column(String(3), ForeignKey('currencies.id'), nullable=False)
     currency_value = Column(CurrencyValue(), nullable=False)
     reference_value = Column(CurrencyValue(), nullable=False)
-    update_date = Column(Date, nullable=False, default=func.current_timestamp())
+    update_date = Column(DateTime, nullable=False, default=func.current_timestamp())
 
-    currency = relationship("Currency", order_by="CurrencyRate.update_date", backref="rates")
+    currency = relationship("Currency",
+                backref=backref("rates", lazy='dynamic',
+                                order_by="desc(CurrencyRate.update_date)")
+                            )
     
     @hybrid_property
     def reference_to_currency_ratio(self):
@@ -28,4 +31,4 @@ class CurrencyRate(cbpos.database.Base, common.Item):
         return self.currency_value/self.reference_value
     
     def __repr__(self):
-        return "<CurrencyRate %s>" % (self.currency.id,)
+        return "<CurrencyRate %s %s:%s>" % (self.currency.id, self.currency_value, self.reference_value)

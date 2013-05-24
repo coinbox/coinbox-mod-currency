@@ -14,8 +14,7 @@ class CurrenciesFormController(FormController):
     
     def items(self):
         session = cbpos.database.session()
-        items = session.query(Currency.display, Currency).all()
-        return items
+        return session.query(Currency)
     
     def canDeleteItem(self, item):
         return True
