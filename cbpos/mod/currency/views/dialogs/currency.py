@@ -1,60 +1,49 @@
 from PySide import QtGui
 
-from cbpos.mod.currency.models.currency import Currency
 import cbpos
+
+logger = cbpos.get_logger(__name__)
+
+from cbpos.mod.currency.models import Currency
+
+from cbpos.mod.currency.views import CurrenciesPage
 
 class CurrencyDialog(QtGui.QWidget):
     
     def __init__(self):
         super(CurrencyDialog, self).__init__()
 
-        self.name = QtGui.QLineEdit()
-        self.symbol = QtGui.QLineEdit()
-        self.value = QtGui.QSpinBox()
-        self.value.setMinimum(0)
-        self.value.setSingleStep(1)
-        self.decimalPlaces = QtGui.QSpinBox()
-        self.decimalPlaces.setRange(0, 10)
-        self.decimalPlaces.setSingleStep(1)
-        self.digitGrouping = QtGui.QCheckBox()
+        message = cbpos.tr.currency._("Set up the currencies you will be using. You will be able to change them later also.")
+
+        self.message = QtGui.QLabel(message)
+
+        self.form = CurrenciesPage()
         
         buttonBox = QtGui.QDialogButtonBox()
         
-        self.okBtn = buttonBox.addButton(QtGui.QDialogButtonBox.Ok)
-        self.okBtn.pressed.connect(self.onOkButton)
+        self.doneBtn = buttonBox.addButton(QtGui.QDialogButtonBox.Close)
+        self.doneBtn.pressed.connect(self.onDoneButton)
         
-        self.cancelBtn = buttonBox.addButton(QtGui.QDialogButtonBox.Cancel)
-        self.cancelBtn.pressed.connect(self.onCancelButton)
+        layout = QtGui.QVBoxLayout()
+        layout.setSpacing(10)
+
+        layout.addWidget(self.message)        
+        layout.addWidget(self.form)
+        layout.addWidget(buttonBox)
         
-        rows = [["Name", self.name],
-                ["Symbol", self.symbol],
-                ["Value", self.value],
-                ["Decimal Places", self.decimalPlaces],
-                ["Digit Grouping", self.digitGrouping],
-                [buttonBox]]
-        
-        form = QtGui.QFormLayout()
-        form.setSpacing(10)
-        
-        [form.addRow(*row) for row in rows]
-        
-        self.setLayout(form)
+        self.setLayout(layout)
     
-    def onOkButton(self):
-        currency = Currency(name=self.name.text(),
-                            symbol=self.symbol.text(),
-                            value=self.value.text(),
-                            decimal_places=self.decimalPlaces.value(),
-                            digit_grouping=self.digitGrouping.isChecked()
-                            )
+    def onDoneButton(self):
         session = cbpos.database.session()
-        session.add(currency)
-        session.commit()
+        currency = session.query(Currency).first()
+        
+        if currency is None:
+            QtGui.QMessageBox.warning(self, cbpos.tr.currency._("No currency"),
+                                            cbpos.tr.currency._("You have to sest up at least one currency"),
+                                            QtGui.QMessageBox.Ok)
+            return
         
         cbpos.config["mod.currency", "default"] = unicode(currency.id)
         self.close()
         
         cbpos.ui.show_default()
-    
-    def onCancelButton(self):
-        self.close()
