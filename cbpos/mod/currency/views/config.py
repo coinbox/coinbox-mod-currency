@@ -21,18 +21,18 @@ class CurrencyConfigPage(QtGui.QWidget):
 
     def populate(self):
         session = cbpos.database.session()
-        currencies = session.query(Currency.name, Currency).all()
-        default_id = cbpos.config['mod.currency', 'default']
-        try:
-            default_id = int(default_id)
-        except ValueError:
-            default_id = None
         
+        default_id = cbpos.config['mod.currency', 'default']
+        
+        selected_index = -1
         self.default.clear()
-        for i, c in enumerate(currencies):
-            self.default.addItem(c[0], c[1])
-            if default_id == c[1].id:
-                self.default.setCurrentIndex(i)
+        
+        for i, c in enumerate(session.query(Currency)):
+            self.default.addItem(c.display, c)
+            if default_id == c.id:
+                selected_index = i
+        
+        self.default.setCurrentIndex(selected_index)
     
     def update(self):
         default = self.default.itemData(self.default.currentIndex())

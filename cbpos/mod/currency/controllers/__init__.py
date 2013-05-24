@@ -6,10 +6,13 @@ import cbpos
 logger = cbpos.get_logger(__name__)
 
 def convert(price_in_src, src, dst):
+    if price_in_src == 0:
+        return 0
+    
     if src == dst:
         return price_in_src
     
-    logger.debug(u'Converting {} to {}'.format(repr(price_in_src), dst))
+    logger.debug(u'Converting {} from {} to {}'.format(repr(price_in_src), src, dst))
     
     price_in_dst = price_in_src * src.current_rate.reference_to_currency_ratio * dst.current_rate.currency_to_reference_ratio
     
