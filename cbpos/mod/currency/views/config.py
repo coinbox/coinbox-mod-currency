@@ -2,6 +2,7 @@ from PySide import QtGui
 
 import cbpos
 
+import cbpos.mod.currency.controllers as currency
 from cbpos.mod.currency.models.currency import Currency
 
 class CurrencyConfigPage(QtGui.QWidget):
@@ -22,7 +23,7 @@ class CurrencyConfigPage(QtGui.QWidget):
     def populate(self):
         session = cbpos.database.session()
         
-        default_id = cbpos.config['mod.currency', 'default']
+        default_id = currency.default.id
         
         selected_index = -1
         self.default.clear()
