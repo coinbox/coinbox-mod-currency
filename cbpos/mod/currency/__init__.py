@@ -5,7 +5,6 @@ from cbpos.modules import BaseModuleLoader
 
 class ModuleLoader(BaseModuleLoader):
     dependencies = ('base',)
-    config = [['mod.currency', {'default': ''}]]
     name = 'Multiple Currencies Support'
 
     def load(self):

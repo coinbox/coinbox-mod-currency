@@ -25,7 +25,6 @@ def get_default():
     global _default_cache
     if _default_cache is None:
         currency_id = cbpos.config['mod.currency', 'default']
-        currency_id = None if currency_id == '' else currency_id
         
         session = cbpos.database.session()
         if currency_id is not None:

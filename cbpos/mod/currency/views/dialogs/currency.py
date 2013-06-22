@@ -43,7 +43,7 @@ class CurrencyDialog(QtGui.QWidget):
                                             QtGui.QMessageBox.Ok)
             return
         
-        cbpos.config["mod.currency", "default"] = unicode(currency.id)
+        cbpos.config["mod.currency", "default"] = currency.id
         self.close()
         
         cbpos.ui.show_default()
