@@ -53,8 +53,10 @@ class ModuleLoader(BaseModuleLoader):
     def init(self):
         from cbpos.mod.currency.models import Currency
         
+        from sqlalchemy import func
+        
         session = cbpos.database.session()
-        currency_count = session.query(Currency).count()
+        currency_count = session.query(func.count(Currency))
         if currency_count == 0:
             dispatcher.connect(self.do_prompt_currency, signal='ui-post-init', sender='app')
         
