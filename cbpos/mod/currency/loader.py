@@ -69,9 +69,7 @@ class ModuleLoader(BaseModuleLoader):
         from cbpos.mod.currency.views.dialogs import CurrencyDialog
         
         win = CurrencyDialog()
-        cbpos.ui.window = win
-        cbpos.break_init()
-        cbpos.load_database(True)
+        cbpos.ui.chain_window(win, cbpos.ui.PRIORITY_FIRST_LOW)
     
     def config_pages(self):
         from cbpos.mod.currency.views import CurrencyConfigPage 

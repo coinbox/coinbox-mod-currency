@@ -46,4 +46,4 @@ class CurrencyDialog(QtGui.QWidget):
         cbpos.config["mod.currency", "default"] = currency.id
         self.close()
         
-        cbpos.ui.show_default()
+        cbpos.ui.show_next()
