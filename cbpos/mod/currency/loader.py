@@ -57,9 +57,7 @@ class ModuleLoader(BaseModuleLoader):
         logger.debug("What is this?")
         
         session = cbpos.database.session()
-        #TODO: use that query
-        #session.query(func.count('*')).select_from(User).scalar()
-        currency_count = session.query(func.count(Currency.id)).one()[0]
+        currency_count = session.query(func.count(Currency.id)).scalar()
         
         if currency_count == 0:
             logger.info("No currency defined. Will prompt.")
