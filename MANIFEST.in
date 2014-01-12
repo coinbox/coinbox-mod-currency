@@ -1,1 +1,1 @@
-recursive-include cbpos/mod/*/res *
+recursive-include cbmod/currency/res *

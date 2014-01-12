@@ -1,13 +1,13 @@
 from setuptools import setup, find_packages
 
 setup(
-      name="CoinboxMod-currency",
-      version="0.1",
+      name="Coinbox-mod-currency",
+      version="0.2",
       packages=find_packages(),
       
       zip_safe=True,
       
-      namespace_packages=['cbpos', 'cbpos.mod'],
+      namespace_packages=['cbmod'],
       include_package_data=True,
 
       install_requires=[
@@ -20,7 +20,7 @@ setup(
       
       author='Coinbox POS Team',
       author_email='coinboxpos@googlegroups.com',
-      description='Coinbox POS core package',
-      license='GPLv3',
+      description='Coinbox POS currency module',
+      license='MIT',
       url='http://coinboxpos.org/'
 )
