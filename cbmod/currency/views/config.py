@@ -2,8 +2,8 @@ from PySide import QtGui
 
 import cbpos
 
-import cbpos.mod.currency.controllers as currency
-from cbpos.mod.currency.models.currency import Currency
+import cbmod.currency.controllers as currency
+from cbmod.currency.models.currency import Currency
 
 class CurrencyConfigPage(QtGui.QWidget):
     label = 'Currency'

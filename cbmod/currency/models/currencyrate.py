@@ -1,12 +1,12 @@
 import cbpos
 
-import cbpos.mod.base.models.common as common
+import cbmod.base.models.common as common
 
 from sqlalchemy import func, Table, Column, Integer, Numeric, String, Float, DateTime, Boolean, MetaData, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method, Comparator
 
-from cbpos.mod.currency.models.currency import CurrencyValue
+from cbmod.currency.models.currency import CurrencyValue
 
 class CurrencyRate(cbpos.database.Base, common.Item):
     __tablename__ = 'currency_rates'

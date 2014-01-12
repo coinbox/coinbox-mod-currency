@@ -2,10 +2,10 @@ from PySide import QtCore, QtGui
 
 import cbpos
 
-from cbpos.mod.currency.controllers import CurrenciesFormController
-from cbpos.mod.currency.models import CurrencyRate 
+from cbmod.currency.controllers import CurrenciesFormController
+from cbmod.currency.models import CurrencyRate 
 
-from cbpos.mod.base.views import FormPage
+from cbmod.base.views import FormPage
 
 from babel.core import Locale
 import sys

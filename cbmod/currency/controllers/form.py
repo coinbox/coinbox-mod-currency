@@ -1,8 +1,8 @@
 import cbpos
 
-from cbpos.mod.currency.models import Currency, CurrencyUnit
+from cbmod.currency.models import Currency, CurrencyUnit
 
-from cbpos.mod.base.controllers import FormController
+from cbmod.base.controllers import FormController
 
 class CurrenciesFormController(FormController):
     cls = Currency

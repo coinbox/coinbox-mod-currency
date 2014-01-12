@@ -4,9 +4,9 @@ import cbpos
 
 logger = cbpos.get_logger(__name__)
 
-from cbpos.mod.currency.models import Currency
+from cbmod.currency.models import Currency
 
-from cbpos.mod.currency.views import CurrenciesPage
+from cbmod.currency.views import CurrenciesPage
 
 class CurrencyDialog(QtGui.QWidget):
     

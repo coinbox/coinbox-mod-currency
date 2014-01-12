@@ -7,11 +7,11 @@ from cbpos.modules import BaseModuleLoader
 
 class ModuleLoader(BaseModuleLoader):
     def load_models(self):
-        from cbpos.mod.currency.models import Currency, CurrencyUnit, CurrencyRate
+        from cbmod.currency.models import Currency, CurrencyUnit, CurrencyRate
         return [Currency, CurrencyUnit, CurrencyRate]
 
     def test_models(self):
-        from cbpos.mod.currency.models import Currency, CurrencyUnit, CurrencyRate
+        from cbmod.currency.models import Currency, CurrencyUnit, CurrencyRate
         
         LBP = Currency(id='LBP')
         USD = Currency(id='USD')
@@ -39,7 +39,7 @@ class ModuleLoader(BaseModuleLoader):
 
     def menu(self):
         from cbpos.interface import MenuItem
-        from cbpos.mod.currency.views import CurrenciesPage
+        from cbmod.currency.views import CurrenciesPage
         
         return [[],
                 [MenuItem('currencies', parent='system',
@@ -50,7 +50,7 @@ class ModuleLoader(BaseModuleLoader):
                 ]
 
     def init(self):
-        from cbpos.mod.currency.models import Currency
+        from cbmod.currency.models import Currency
         
         from sqlalchemy import func
         
@@ -66,11 +66,11 @@ class ModuleLoader(BaseModuleLoader):
         return True
     
     def do_prompt_currency(self):
-        from cbpos.mod.currency.views.dialogs import CurrencyDialog
+        from cbmod.currency.views.dialogs import CurrencyDialog
         
         win = CurrencyDialog()
         cbpos.ui.chain_window(win, cbpos.ui.PRIORITY_FIRST_LOW)
     
     def config_pages(self):
-        from cbpos.mod.currency.views import CurrencyConfigPage 
+        from cbmod.currency.views import CurrencyConfigPage 
         return [CurrencyConfigPage]

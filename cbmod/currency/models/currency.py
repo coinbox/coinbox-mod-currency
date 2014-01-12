@@ -1,6 +1,6 @@
 import cbpos
 
-import cbpos.mod.base.models.common as common
+import cbmod.base.models.common as common
 
 logger = cbpos.get_logger(__name__)
 
