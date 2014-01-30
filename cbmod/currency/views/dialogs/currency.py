@@ -13,7 +13,7 @@ class CurrencyDialog(QtGui.QWidget):
     def __init__(self):
         super(CurrencyDialog, self).__init__()
 
-        message = cbpos.tr.currency._("Set up the currencies you will be using. You will be able to change them later also.")
+        message = cbpos.tr.currency_("Set up the currencies you will be using. You will be able to change them later also.")
 
         self.message = QtGui.QLabel(message)
 
@@ -38,8 +38,8 @@ class CurrencyDialog(QtGui.QWidget):
         currency = session.query(Currency).first()
         
         if currency is None:
-            QtGui.QMessageBox.warning(self, cbpos.tr.currency._("No currency"),
-                                            cbpos.tr.currency._("You have to sest up at least one currency"),
+            QtGui.QMessageBox.warning(self, cbpos.tr.currency_("No currency"),
+                                            cbpos.tr.currency_("You have to sest up at least one currency"),
                                             QtGui.QMessageBox.Ok)
             return
         

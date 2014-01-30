@@ -8,8 +8,8 @@ class CurrenciesFormController(FormController):
     cls = Currency
     
     def fields(self):
-        return {"id": (cbpos.tr.currency._("Currency"), None),
-                "current_rate": (cbpos.tr.currency._("Currency Rate"), None)
+        return {"id": (cbpos.tr.currency_("Currency"), None),
+                "current_rate": (cbpos.tr.currency_("Currency Rate"), None)
                 }
     
     def items(self):

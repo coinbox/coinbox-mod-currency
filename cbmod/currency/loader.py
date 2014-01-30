@@ -43,7 +43,7 @@ class ModuleLoader(BaseModuleLoader):
         
         return [[],
                 [MenuItem('currencies', parent='system',
-                          label=cbpos.tr.currency._('Currencies'),
+                          label=cbpos.tr.currency_('Currencies'),
                           icon=cbpos.res.currency('images/menu-currencies.png'),
                           page=CurrenciesPage
                           )]

@@ -15,13 +15,13 @@ class CurrenciesPage(FormPage):
     
     def widgets(self):
         
-        currency_label = QtGui.QLabel(cbpos.tr.currency._("Currency value"))
+        currency_label = QtGui.QLabel(cbpos.tr.currency_("Currency value"))
         
         currency_value = QtGui.QDoubleSpinBox()
         currency_value.setRange(0, sys.maxint)
         currency_value.setSingleStep(1)
         
-        reference_label = QtGui.QLabel(cbpos.tr.currency._("is equivalent to (reference)"))
+        reference_label = QtGui.QLabel(cbpos.tr.currency_("is equivalent to (reference)"))
         
         reference_value = QtGui.QDoubleSpinBox()
         reference_value.setRange(0, sys.maxint)
