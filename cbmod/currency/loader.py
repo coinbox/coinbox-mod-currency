@@ -48,29 +48,16 @@ class ModuleLoader(BaseModuleLoader):
                           page=CurrenciesPage
                           )]
                 ]
-
-    def init(self):
-        from cbmod.currency.models import Currency
-        
-        from sqlalchemy import func
-        
-        logger.debug("What is this?")
-        
-        session = cbpos.database.session()
-        currency_count = session.query(func.count(Currency.id)).scalar()
-        
-        if currency_count == 0:
-            logger.info("No currency defined. Will prompt.")
-            dispatcher.connect(self.do_prompt_currency, signal='ui-post-init', sender='app')
-        
-        return True
-    
-    def do_prompt_currency(self):
-        from cbmod.currency.views.dialogs import CurrencyDialog
-        
-        win = CurrencyDialog()
-        cbpos.ui.chain_window(win, cbpos.ui.PRIORITY_FIRST_LOW)
     
     def config_pages(self):
         from cbmod.currency.views import CurrencyConfigPage 
         return [CurrencyConfigPage]
+    
+    def first_run_wizard_pages(self):
+        from cbmod.base.views.wizard import WizardPageCollection
+        from cbmod.currency.views.wizard import CurrencySetupWizardPage
+        
+        class Wizards(WizardPageCollection):
+            pages = (CurrencySetupWizardPage,)
+        
+        return Wizards()
